@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <!-- HEADER.HTML -->
+        <header class="py-5 bg-light border-bottom mb-4">
+            <div class="container">
+                <div class="text-center my-5">
+                    <h1 class="fw-bolder">Responses to your post:</h1>
+                    <p class="lead mb-0">Here you can see all the responses!</p>
+                </div>
+            </div>
+        </header>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    {% for response in response_list %}
+                        {% if response.status == False %}
+                        <h5><p>Pending responses:</p></h5>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p>{{ response.text }}</p>
+                                <p><strong>Author of the response: {{ response.user }}</strong></p>
+                                <a class="btn btn-success" href="{% url 'response_update' response.pk %}">Accept</a>
+                                <a class="btn btn-danger" href="{% url 'response_delete' response.pk %}">Delete</a>
+                            </div>
+                        </div>
+                        {% else %}
+                            <h5><p>Accepted response:</p></h5>
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <p>{{ response.text }}</p>
+                                    <p><strong>Author of the response: {{ response.user }}</strong></p>
+                                    <a class="btn btn-danger" href="{% url 'response_delete' response.pk %}">Delete</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% empty %}
+                        <h5><p>No responses yet</p></h5>
+                    {% endfor %}
+
+                </div>
+                <!-- SIDE_WIDGET.HTML -->
+                {% include 'side_widget.html' %}
+            </div>
+        </div>
+     <!-- PAGINATION.HTML -->
+    {% include 'pagination.html' %}
+{% endblock content %}
+
+
+
+
+

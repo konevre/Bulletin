@@ -1,0 +1,40 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <!-- HEADER.HTML -->
+        <header class="py-5 bg-light border-bottom mb-4">
+            <div class="container">
+                <div class="text-center my-5">
+                    <h1 class="fw-bolder">Hi, {{ user.username }}!</h1>
+                    <p class="lead mb-0">Here you can see all your posts!</p>
+                </div>
+            </div>
+        </header>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    {% for post in post_list %}
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h2 class="card-title">{{ post.title }}</h2>
+                                <p class="card-text">{{ post.text|safe }}</p>
+                                <a class="btn btn-primary" href="{% url 'post_detail' post.pk %}">Read more →</a>
+                                <a class="btn btn-warning" href="{% url 'post_update' post.pk %}">Update</a>
+                                <a class="btn btn-danger" href="{% url 'post_delete' post.pk %}">Delete</a>
+                                <a class="btn btn-secondary" href="{% url 'response_list' post.pk %}">Responses</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <!-- SIDE_WIDGET.HTML -->
+                {% include 'side_widget.html' %}
+            </div>
+        </div>
+     <!-- PAGINATION.HTML -->
+    {% include 'pagination.html' %}
+{% endblock content %}
+
+
+
+
+

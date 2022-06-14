@@ -1,0 +1,63 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<section class="d-flex flex-column min-vh-100">
+    <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-8">
+                <!-- Post content-->
+                    <article class="mb-4">
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
+                        </header>
+                        <!-- Preview image figure-->
+                        <!-- Post content-->
+                        <section class="mb-5">
+                            <p class="fs-5 mb-4">{{ post.text|safe }}</p>
+                        </section>
+
+                    </article>
+                    <!-- SIDE_WIDGET.HTML -->
+                    <!-- response -->
+                    {% if user.is_authenticated %}
+                        {% if request.user != post.user %}
+                            <hr>
+                            <h4>Write a response to this post:</h4>
+                        {% endif %}
+                    <div class="card bg-light mb-5">
+                        <div class="card-body">
+                            <!-- Comment form-->
+                            <form method="POST">
+                                {% csrf_token %}
+                                {{ form.post.as_hidden }}
+                                {{ form.text|as_crispy_field }}
+                                {{ form.user.as_hidden }}
+                                <br>
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </form>
+                            <br>
+                            {% if accepted_responses %}
+                            <!-- Single comment-->
+                            {% for response in accepted_responses %}
+                            <div class="d-flex">
+                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                <div class="ms-3">
+                                    <div class="fw-bold">{{ response.user }}</div>
+                                    {{ response.text }}
+                                </div>
+                            </div>
+                            <br>
+                            {% endfor %}
+
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
